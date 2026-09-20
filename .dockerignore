@@ -21,3 +21,11 @@ cache.db
 
 .vscode
 .idea
+
+.git
+.env*
+*.sqlite
+*.db
+__pycache__
+.pytest_cache
+.docs/

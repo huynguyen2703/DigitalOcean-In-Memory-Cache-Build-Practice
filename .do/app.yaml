@@ -1,4 +1,4 @@
-name: do-prototype-app
+name: digitalocean-in-memory-cache-build-practice
 region: sfo
 services:
 - name: api
