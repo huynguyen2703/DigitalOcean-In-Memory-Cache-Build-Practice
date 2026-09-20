@@ -6,10 +6,10 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Path, Request
 from sqlmodel import Session
 
-from app.database import create_db_and_tables, engine, get_session
-from app.models import CacheResponse, CacheSetRequest
-from app.observability import setup_observability
-from app.service import CacheService
+from backend.app.database import create_db_and_tables, engine, get_session
+from backend.app.models import CacheResponse, CacheSetRequest
+from backend.app.observability import setup_observability
+from backend.app.service import CacheService
 
 SWEEP_INTERVAL_SECONDS = 30
 

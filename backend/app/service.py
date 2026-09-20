@@ -9,7 +9,7 @@ from typing import Any
 
 from sqlmodel import Session
 
-from app.repository import CacheRepository
+from backend.app.repository import CacheRepository
 
 logger = logging.getLogger("app.service")
 

@@ -4,7 +4,7 @@ from typing import Any, Generic, TypeVar
 
 from sqlmodel import Session, SQLModel, select
 
-from app.models import CacheRecord
+from backend.app.models import CacheRecord
 
 T = TypeVar("T", bound=SQLModel)
 
