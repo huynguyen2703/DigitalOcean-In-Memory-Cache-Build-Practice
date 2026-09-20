@@ -3,10 +3,26 @@ region: sfo
 services:
 - name: api
   github:
-    repo: YOUR_GITHUB_USERNAME/project-template
+    repo: huynguyen2703/DigitalOcean-In-Memory-Cache-Build-Practice
     branch: main
     deploy_on_push: true
   dockerfile_path: Dockerfile
   http_port: 8080
+  # Must stay 1: CacheService's LRU cache + asyncio.Lock live in a single process's memory.
+  # Scaling instance_count beyond 1 would split traffic across independent, inconsistent
+  # caches with no coordination (out of scope per requirements.md §2.3 / §4).
   instance_count: 1
   instance_size_slug: basic-xxs
+  envs:
+    - key: CACHE_MAX_SIZE
+      value: "10000"
+      scope: RUN_TIME
+  # Enables App Platform's automatic rollback: a failing health check keeps the previous
+  # (working) deployment live instead of routing traffic to a broken instance.
+  health_check:
+    http_path: /health
+    initial_delay_seconds: 10
+    period_seconds: 10
+    timeout_seconds: 5
+    success_threshold: 1
+    failure_threshold: 3

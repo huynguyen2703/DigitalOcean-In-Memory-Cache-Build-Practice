@@ -23,7 +23,8 @@ INPUT CONTEXT INJECTION
 
 ## 1. PROBLEM STATEMENT
 
-[INSERT PROBLEM STATEMENT OR TASK DESCRIPTION HERE]
+I am building a functional service for Digital Ocean Platform. The component is an
+in memory cache service run by LRU eviction policy algorithm. This component will be built within 3 hours and deployed on Digital Ocean App Platform.
 
 ## 2. SYSTEM CONSTRAINTS & TARGET PRIMITIVES
 
@@ -33,11 +34,18 @@ INPUT CONTEXT INJECTION
 
 ## 3. PAPER SKETCH & COMPONENT FLOW NOTES
 
-[INSERT YOUR 3-MINUTE PAPER SKETCH, COMPONENT BOUNDARIES, ENDPOINTS, AND STATE FLOW NOTES HERE]
+- The service will expose HTTP endpoints for cache operations (`GET`, `SET`, `DELETE`).
+- The in-memory cache will be implemented using a dictionary for fast key-value access.
+- LRU eviction will be managed using a `collections.deque`(simulate double linked list) to track access order.
+- Background loop will periodically check memory usage and trigger eviction if necessary.
+- Each cache operation will acquire an `asyncio.Lock` to ensure thread-safe access.
+- The service will run as a single-node process on Digital Ocean App Platform, without external brokers.
+- SQLite database will be used for persistent storage of cache entries, ensuring data durability across service restarts and cache miss, simulating how a database and in-memory cache can work together in a hybrid storage model.
 
 ## 4. TECHNICAL GAPS, EDGE CASES & ARCHITECTURAL DEFENSES
 
-[INSERT IDENTIFIED EDGE CASES, LOCKING STRATEGIES, MEMORY BOUNDS, OR FAULT TOLERANCE DEFENSES TO EMBED IN THE DESIGN]
+- Notes from developer may contain technical gap, however, you should try to close 
+that gap to catch technical tradeoff and fill in missing considerations to build this functional component to make it production-ready. Of course, there are tradeoffs need to be cut as the build need to happen within 3 hours.
 
 ---
 

@@ -1,6 +1,10 @@
 from collections.abc import Sequence
+from datetime import datetime, timezone
 from typing import Any, Generic, TypeVar
+
 from sqlmodel import Session, SQLModel, select
+
+from app.models import CacheRecord
 
 T = TypeVar("T", bound=SQLModel)
 
@@ -85,3 +89,26 @@ class BaseRepository(Generic[T]):
         except Exception:
             db.rollback()
             raise
+
+
+class CacheRepository(BaseRepository[CacheRecord]):
+    """Persistence access for cache entries; the sole SQLite touchpoint for CacheService."""
+
+    def __init__(self) -> None:
+        super().__init__(CacheRecord)
+
+    def upsert(
+        self, db: Session, *, key: str, value: str, expires_at: datetime | None
+    ) -> CacheRecord:
+        existing = self.get(db, key)
+        if existing is not None:
+            return self.update(
+                db,
+                db_obj=existing,
+                obj_in={
+                    "value": value,
+                    "expires_at": expires_at,
+                    "updated_at": datetime.now(timezone.utc).replace(tzinfo=None),
+                },
+            )
+        return self.create(db, obj_in=CacheRecord(key=key, value=value, expires_at=expires_at))
